@@ -1,5 +1,11 @@
+import DateCounter from "./DateCounter";
+
 function App() {
-  return <h1>Hello React</h1>;
+  return (
+    <div>
+      <DateCounter />
+    </div>
+  );
 }
 
 export default App;
