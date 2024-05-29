@@ -14,6 +14,8 @@ function App() {
     // loading, ready, error, active, finished
     status: "loading",
     index: 0,
+    answer: null,
+    points: 0,
   };
 
   function reducer(state, action) {
@@ -24,6 +26,14 @@ function App() {
       case "start":
         return { ...state, status: "active" };
 
+      case "newAnswer":
+        const question = state.questions.at(state.index);
+        return {
+          ...state,
+          answer: action.payload,
+          points: state.points + question.points,
+        };
+
       case "dataFailed":
         return { ...state, status: "error" };
 
@@ -32,7 +42,7 @@ function App() {
     }
   }
 
-  const [{ questions, status, index }, dispatch] = useReducer(
+  const [{ questions, status, index, answer }, dispatch] = useReducer(
     reducer,
     initalState
   );
@@ -54,7 +64,13 @@ function App() {
         {status === "ready" && (
           <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
         )}
-        {status === "active" && <Question question={questions[index]} />}
+        {status === "active" && (
+          <Question
+            question={questions[index]}
+            answer={answer}
+            dispatch={dispatch}
+          />
+        )}
       </Main>
     </div>
   );
