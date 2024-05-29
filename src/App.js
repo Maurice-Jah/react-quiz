@@ -3,6 +3,7 @@ import Main from "./Main";
 import Loader from "./Loader";
 import Error from "./Error";
 import StartScreen from "./StartScreen";
+import Question from "./Question";
 
 import { useEffect, useReducer } from "react";
 
@@ -10,7 +11,7 @@ function App() {
   const initalState = {
     questions: [],
 
-    // loading, ready, error
+    // loading, ready, error, active, finished
     status: "loading",
   };
 
@@ -18,6 +19,9 @@ function App() {
     switch (action.type) {
       case "dataReceived":
         return { ...state, status: "ready", questions: action.payload };
+
+      case "start":
+        return { ...state, status: "active" };
 
       case "dataFailed":
         return { ...state, status: "error" };
@@ -43,7 +47,10 @@ function App() {
       <Main>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
-        {status === "ready" && <StartScreen numQuestions={numQuestions} />}
+        {status === "ready" && (
+          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+        )}
+        {status === "active" && <Question />}
       </Main>
     </div>
   );
