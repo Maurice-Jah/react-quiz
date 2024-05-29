@@ -31,7 +31,10 @@ function App() {
         return {
           ...state,
           answer: action.payload,
-          points: state.points + question.points,
+          points:
+            action.payload === question.correctOption
+              ? state.points + question.points
+              : state.points,
         };
 
       case "dataFailed":
