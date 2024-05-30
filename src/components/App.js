@@ -1,3 +1,4 @@
+import { useEffect, useReducer } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Loader from "./Loader";
@@ -6,8 +7,7 @@ import StartScreen from "./StartScreen";
 import Question from "./Question";
 import NextButton from "./NextButton";
 import Progress from "./Progress";
-
-import { useEffect, useReducer } from "react";
+import FinishScreen from "./FinishScreen";
 
 function App() {
   const initalState = {
@@ -18,6 +18,7 @@ function App() {
     index: 0,
     answer: null,
     points: 0,
+    highscore: 0,
   };
 
   function reducer(state, action) {
@@ -41,6 +42,14 @@ function App() {
 
       case "nextQuestion":
         return { ...state, index: state.index++, answer: null };
+
+      case "finish":
+        return {
+          ...state,
+          status: "finished",
+          highscore:
+            state.highscore > state.points ? state.highscore : state.points,
+        };
 
       case "dataFailed":
         return { ...state, status: "error" };
@@ -91,8 +100,17 @@ function App() {
               dispatch={dispatch}
             />
 
-            <NextButton answer={answer} dispatch={dispatch} />
+            <NextButton
+              answer={answer}
+              dispatch={dispatch}
+              index={index}
+              numQuestions={numQuestions}
+            />
           </>
+        )}
+
+        {status === "finished" && (
+          <FinishScreen points={points} maxPossiblePoints={maxPossiblePoints} />
         )}
       </Main>
     </div>

@@ -1,5 +1,4 @@
 function Progress({ numQuestions, index, maxPossiblePoints, points, answer }) {
-  console.log(answer);
   return (
     <header className="progress">
       <progress
