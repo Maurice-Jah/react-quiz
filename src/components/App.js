@@ -51,6 +51,9 @@ function App() {
             state.highscore > state.points ? state.highscore : state.points,
         };
 
+      case "restart":
+        return { ...initalState, status: "ready", questions: state.questions };
+
       case "dataFailed":
         return { ...state, status: "error" };
 
@@ -110,7 +113,11 @@ function App() {
         )}
 
         {status === "finished" && (
-          <FinishScreen points={points} maxPossiblePoints={maxPossiblePoints} />
+          <FinishScreen
+            points={points}
+            maxPossiblePoints={maxPossiblePoints}
+            dispatch={dispatch}
+          />
         )}
       </Main>
     </div>
